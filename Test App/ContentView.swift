@@ -16,13 +16,16 @@ struct ContentView: View {
             ScrollView(.horizontal) {
                     locationInfo
             }
+            .scrollIndicators(.hidden)
         }
     }
 }
 
 var locationInfo: some View {
-    HStack {
-        ForEach(beaches.indices) { index in
+    @State var isFavorite: Bool = false
+    
+    return HStack {
+        ForEach(beaches.indices, id: \.self) { index in
                 ZStack {
                     Image(beaches[index].image)
                         .resizable()
@@ -36,7 +39,7 @@ var locationInfo: some View {
                         }
                         .padding()
                         Spacer()
-                        Image(systemName: "heart")
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
                             .padding()
                     }
                     .background(Color.gray.opacity(0.2))
@@ -44,6 +47,7 @@ var locationInfo: some View {
                 }
                 .frame(width: 300, height: 300)
                 .padding()
+
         }
     }
     .foregroundStyle(.white)
@@ -63,9 +67,13 @@ class Beach {
 
 var laguna: Beach = Beach(name: "Laguna", location: "Laguna Beach, CA", image: "laguna")
 
-var newport: Beach = Beach(name: "Newport", location: "Newport Beach, CA", image: "laguna")
+var newport: Beach = Beach(name: "Newport", location: "Newport Beach, CA", image: "newport")
 
-var beaches = [laguna,newport]
+var santaMonica: Beach = Beach(name: "Santa Monica", location: "Santa Monica, CA", image: "santaMonica")
+
+var laJolla: Beach = Beach(name: "La Jolla", location: "La Jolla, CA", image: "laJolla")
+
+var beaches = [laguna,newport, santaMonica, laJolla]
 
 #Preview {
     ContentView()

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct ContentView: View {
     var body: some View {
@@ -13,17 +14,22 @@ struct ContentView: View {
             Image("cream-bg")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
-            ScrollView(.horizontal) {
-                    locationInfo
+            VStack {
+                Map()
+                    .padding(.top)
+                    .frame(width: 4000, height: 300)
+                    .cornerRadius(30)
+                ScrollView(.horizontal) {
+                        locationInfo
+                }
+                .scrollIndicators(.hidden)
             }
-            .scrollIndicators(.hidden)
         }
     }
 }
 
 var locationInfo: some View {
     @State var isFavorite: Bool = false
-    
     return HStack {
         ForEach(beaches.indices, id: \.self) { index in
                 ZStack {
@@ -39,7 +45,15 @@ var locationInfo: some View {
                         }
                         .padding()
                         Spacer()
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        Button(action: {
+                            if isFavorite {
+                                isFavorite = true
+                            } else {
+                                isFavorite = false
+                            }
+                        } ) {
+                            Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        }
                             .padding()
                     }
                     .background(Color.gray.opacity(0.2))
@@ -47,11 +61,11 @@ var locationInfo: some View {
                 }
                 .frame(width: 300, height: 300)
                 .padding()
-
         }
     }
     .foregroundStyle(.white)
 }
+
 
 class Beach {
     var name: String
@@ -73,7 +87,7 @@ var santaMonica: Beach = Beach(name: "Santa Monica", location: "Santa Monica, CA
 
 var laJolla: Beach = Beach(name: "La Jolla", location: "La Jolla, CA", image: "laJolla")
 
-var beaches = [laguna,newport, santaMonica, laJolla]
+var beaches = [laguna, newport, santaMonica, laJolla]
 
 #Preview {
     ContentView()
